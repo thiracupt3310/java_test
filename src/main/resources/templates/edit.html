@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Package</title>
+</head>
+<body>
+<section th:replace="menu::menu"></section>
+
+<form th:action="@{/edit} + '/' + ${packageModel.getId()}" method="post" th:object="${packageModel}">
+    <label for="name">Package name:</label><br>
+    <input type="text" id="name" th:field="*{name}" ><br>
+
+    <label for="price">Package price per unit:</label><br>
+    <input type="number" id="price" th:field="*{price_per_unit}"><br><br>
+
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

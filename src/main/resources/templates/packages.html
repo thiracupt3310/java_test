@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Package</title>
+</head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.search-from input {
+  margin-top: 10px;
+  width: 15%;
+}
+</style>
+<body>
+
+<section th:replace="menu::menu"></section>
+
+
+
+<div>
+  <form id="searchForm" class="search-from" action="/" method="get">
+    <h3>Search Package Form</h3>
+    ID: <input name="id" placeholder="enter package id" th:value="${input_id}"/><br>
+    NAME: <input name="name" placeholder="enter package name" th:value="${input_name}"/><br>
+    MIN PRICE PER UNIT: <input type="number" name="min_price" placeholder="enter package price per unit( dd-MM-YYYY)" th:value="${input_min_price}"/>
+    MAX PRICE PER UNIT: <input type="number" name="max_price" placeholder="enter package price per unit( dd-MM-YYYY)" th:value="${input_max_price}"/><br>
+    Date From: <input  type="date" name="date_from" placeholder="enter package date from" th:value="${input_date_from}"/>
+    Date To: <input type="date" name="date_to" placeholder="enter package date to" th:value="${input_date_to}"/><br>
+    <input id="sortType" name="search_type" hidden="hidden" />
+    <input type="submit" value="Search" />
+
+  </form>
+</div>
+
+<table style="margin-top: 30px">
+  <tr>
+    <th>id <span> <button onclick="onSortClick('id')">sort</button></span></th>
+    <th>name <span> <button onclick="onSortClick('name')">sort</button></span></th>
+    <th>price per unit <span onclick="onSortClick('price')"> <button>sort</button></span></th>
+    <th>create date <span onclick="onSortClick('date')"> <button>sort</button></span></th>
+    <th>action</th>
+  </tr>
+  <tr th:each="p: ${packages}">
+    <td th:text="${p.getId()}"></td>
+    <td th:text="${p.getName()}"></td>
+    <td th:text="${p.getPrice_per_unit()}"></td>
+    <td th:text="${p.getCreate_date()}"></td>
+    <td>
+      <a th:href="'/edit/' + ${p.getId()}"><button>Edit</button> </a>
+      <span style="margin-left: 30px">
+        <form id="deleteForm" th:action="@{/delete} + '/' + ${p.getId()}" method="delete" th:object="${packageModel}" >
+          <button onclick="onDeleteClick()">Delete</button>
+        </form>
+      </span>
+    </td>
+  </tr>
+
+</table>
+</body>
+<script>
+  function onDeleteClick(){
+    if (confirm("Are you sure?") == true) {
+      document.getElementById('deleteForm').submit()
+    }
+  }
+
+  function onSortClick(type){
+     document.getElementById('sortType').value = type
+     document.getElementById('searchForm').submit()
+  }
+</script>
+</html>
